@@ -8,9 +8,13 @@ const asyncHandler = require('express-async-handler')
 const { nextTick } = require('process')
 const { errorHandler } = require('../middleware/errorMiddleware.js')
 const User = require('../models/userModel.js')
-const generateToken =require ('../utils/generateToken.js')
-const sendEmail =require ('../utils/email.js')
-const crypto=require('crypto');
+const generateToken = require('../utils/generateToken.js')
+const sendEmail = require('../utils/email.js')
+const crypto = require('crypto');
+const path = require('path');
+
+
+
 // @desc   register a new Profile
 // @route   POST /api/users
 // @access  Public
@@ -58,8 +62,8 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       photo: user.photo,
-     email: user.email,
-       isAdmin: user.isAdmin,
+      email: user.email,
+      isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
   } else {
@@ -115,14 +119,15 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(404)
 
 
-//ekjfdhekw
+    //ekjfdhekw
 
     throw new Error('User Not Found')
 
   }
 })
 
-const uploadProfilePic = asyncHandler(async(req, res, next)=>{
+
+const uploadProfilePic = asyncHandler(async (req, res, next) => {
 
   // find the user .. id;
   console.log("Initiating a handshake.....".red.bold)
@@ -131,103 +136,98 @@ const uploadProfilePic = asyncHandler(async(req, res, next)=>{
 
   console.log("Found User......".green.bold)
   console.log(user)
-  if(!user) return next({status:404, message: 'User not found'})
-  
-  if(!req.files) return next({status:404, message: 'Please upload file'})
+  if (!user) return next({ status: 404, message: 'User not found' })
 
-   // file instance
+  if (!req.files) return next({ status: 404, message: 'Please upload file' })
+
+  // file instance
   const file = req.files.file
 
-  console.log("1",file.name);
+  console.log("1", file.name);
   console.log(user._id);
   console.log(path.parse(file.name).ext)
   file.name = `pic_${user._id}${path.parse(file.name).ext}`
 
-  console.log("2",file.name);
- 
-  file.mv(`backend/public/uploads/${file.name}`, async(err)=>{
+  console.log("2", file.name);
+
+  file.mv(`backend/public/uploads/${file.name}`, async (err) => {
     console.log(err)
-       if (err) return next({status:500, message: 'Cant upload file'})
-       console.log("inside");
-       const result  = await User.findByIdAndUpdate(req.params.id, {photo: file.name});
-       res.json({success: true, data: file.name})
+    if (err) return next({ status: 500, message: 'Cant upload file' })
+    console.log("inside");
+    const result = await User.findByIdAndUpdate(req.params.id, { photo: file.name });
+    res.json({ success: true, data: file.name })
   })
 
-  
-   // mv to public/uploads
-
-   // update the user model with path
-
 })
-
 //Forgot Password
 
-const forgotPassword= asyncHandler(async(req,res)=>{
-  const user=await User.findOne({email:req.body.email});
-  if(!user){
+const forgotPassword = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
     return new Error("No user with the given email address")
   }
-  const resetToken=user.createPasswordResetToken();
-  await user.save({validateBeforesave:false});
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforesave: false });
 
 
-  const resetURL=`${req.protocol}://${req.get('host')}/api/users/resetpassword/${resetToken}`;
-  const url=`http://localhost:3000/resetPassword/${resetToken};`
-  const message=`Forgot your password?Submit a PATCH request with your new password and passwordConfirm 
-  to:<a> ${url}.</a>\nIf you didn't forget your password , please ignore this email!`;
+  const resetURL = `${req.protocol}://${req.get('host')}/api/users/resetpassword/${resetToken}`;
+  const url = `http://localhost:3000/resetPassword/${resetToken};`
+  const message = `Forgot your password?Submit a PATCH request with your new password and passwordConfirm to:<a> ${url}.</a>
+  \n
+  If you didn't forget your password , please ignore this email!`;
 
-  try{
+  try {
     await sendEmail({
-      email:user.email,
-      subject:'Your password reset token(valid for 10 min)',
+      email: user.email,
+      subject: 'Your password reset token(valid for 10 min)',
       message
     });
     res.status(200).json({
-      status:'success',
-      message:'Token sent to email'
+      status: 'success',
+      message: 'Token sent to email'
     });
 
-  } catch(err){
-    user.passwordResetToken=undefined;
-    user.passwordResetExpires=undefined;
-    await user.save({validateBeforesave:false});
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforesave: false });
     res.status(500)
     throw new Error('Error in sending mail')
   }
- 
+
 });
 
 
 //resetPassword
-const resetPassword= asyncHandler(async(req,res)=>{
+const resetPassword = asyncHandler(async (req, res) => {
 
-  const hashedToken=crypto.createHash('sha256').update(req.params.token).digest('hex');
-  const user=await User.findOne({passwordResetToken:hashedToken,passwordResetExpires:{$gt:Date.now()} 
-});
+  const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+  const user = await User.findOne({
+    passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() }
+  });
 
-if(!user)
-{
-  res.status(500)
-  throw new Error('Token expired')
-}
-if (req.body.password !== req.body.confirmPassword) {
-  return next(new ErrorHandler('Password does not match', 400))
-}
+  if (!user) {
+    res.status(500)
+    throw new Error('Token expired')
+  }
+  if (req.body.password !== req.body.confirmPassword) {
+    return (new ErrorHandler('Password does not match', 400))
+  }
 
-user.password=req.body.password;
-// user.passwordConfirm
-user.passwordResetToken=undefined;
-user.passwordResetExpires=undefined;
-await user.save();
-const token=generateToken(user._id);
-res.status(200).json({
-  status:'success',
-  token
-});
-  
+  user.password = req.body.password;
+  // user.passwordConfirm
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+  const token = generateToken(user._id);
+  res.status(200).json({
+    status: 'success',
+    token
+  });
+
 })
 
 // export { authUser, registerUser, getUserProfile, updateUserProfile, uploadProfilePic ,forgotPassword, resetPassword }
 
-module.exports= { authUser, registerUser, getUserProfile, updateUserProfile,uploadProfilePic, forgotPassword,resetPassword }
+module.exports = { authUser, registerUser, getUserProfile, updateUserProfile, uploadProfilePic, forgotPassword, resetPassword }
 
