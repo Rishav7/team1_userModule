@@ -29,12 +29,8 @@ const userSchema = mongoose.Schema({
         type: String,
         default: 'no-photo.jpg'
     },
-    photo: {
-        type: String,
-        default: "pic.jpg"
-    },
-    passwordResetToken: String,
-    passwordResetExpires: Date
+
+
 },
     {
         timestamps: true
