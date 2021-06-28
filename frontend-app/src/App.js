@@ -16,7 +16,7 @@ import NewPasswordScreen from './screens/NewPasswordScreen';
 //HELLO
 //hello
 
-//hello from vaishnavi
+//hello from vaishnavi mandhana
 
 
 const App = () => {
