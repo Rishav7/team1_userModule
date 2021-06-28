@@ -16,7 +16,7 @@ const fileupload = require('express-fileupload')
 //import middleware 
 
 // import { notFound, errorHandler } from './middleware/errorMiddleware.js'
-const { notFound, errorHandler } = require('./middleware/errorMiddleware.js')
+const { errorHandler, notFound } = require('./middleware/errorMiddleware.js')
 
 // dotenv.config()
 connectDB()
