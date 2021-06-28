@@ -12,6 +12,9 @@ import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import NewPasswordScreen from './screens/NewPasswordScreen';
 
 //hello 2
+//hello git hi there
+//HELLO
+//hello
 
 
 const App = () => {
