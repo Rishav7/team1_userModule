@@ -1,9 +1,3 @@
-// import asyncHandler from 'express-async-handler'
-// import User from '../models/userModel.js'
-// import generateToken from '../utils/generateToken.js'
-// import path from 'path'
-// import sendEmail from '../utils/email.js'
-// import crypto from 'crypto'
 const asyncHandler = require('express-async-handler')
 const { nextTick } = require('process')
 const { errorHandler } = require('../middleware/errorMiddleware.js')
@@ -15,9 +9,9 @@ const path = require('path');
 
 
 
-// @desc   register a new Profile
-// @route   POST /api/users
-// @access  Public
+// desc   register a new Profile
+// route   POST /api/users
+// access  Public
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body

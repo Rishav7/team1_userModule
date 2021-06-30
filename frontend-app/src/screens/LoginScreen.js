@@ -13,11 +13,11 @@ const LoginScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
- 
+
   const [emailError, setEmailError] = useState(true)
   const [passwordError, setPasswordError] = useState(true)
 
-  
+
 
   const onEmailChange = (event) => {
     var emailValue = (event.target.value);
@@ -95,12 +95,12 @@ const LoginScreen = ({ location, history }) => {
             value={password}
             onChange={onPasswordChange}
           ></Form.Control>
-            {!passwordError && <Form.Text className="text-danger">
+          {!passwordError && <Form.Text className="text-danger">
             Please Enter Valid password (test@0t) </Form.Text>}
         </Form.Group>
         <br />
         {/*   */}
-        <Button type='submit' variant='primary' disabled={!passwordError &&  !emailError}>
+        <Button type='submit' variant='primary' >
           Sign In
         </Button>
       </Form>
@@ -108,7 +108,7 @@ const LoginScreen = ({ location, history }) => {
         <Col>
           {/* <Link to={redirect ? `/forgotPassword?redirect=${redirect}` : '/forgotPassword'}> */}
           <Link to="/forgotPassword">
-          Forgot Password
+            Forgot Password
           </Link>
         </Col>
       </Row>
