@@ -28,6 +28,11 @@ const ProfileScreen = ({ history }) => {
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
 	const { success } = userUpdateProfile
 
+
+	const [name_edit,editName]= useState(true);
+	const [email_edit,editEmail]= useState(true);
+	const [password_edit,editPassword]= useState(true);
+
 	useEffect(() => {
 		if (!userInfo) {
 			history.push('/login')
@@ -53,11 +58,13 @@ const ProfileScreen = ({ history }) => {
 			)
 			console.log('clicked')
 		}
+		editName(true)
+		editEmail(true)
+		editPassword(true)
 	}
 	const srcp = 'http://localhost:5000/dp/' + photo
 	return (
-		<Row>
-			<Col md={3}>
+		<div>
 				<h2>User Profile</h2>
 				{message && <Message variant='danger'>{message}</Message>}
 
@@ -67,65 +74,81 @@ const ProfileScreen = ({ history }) => {
 				) : error ? (
 					<Message variant='danger'>{error}</Message>
 				) : (
+					
 					<Form onSubmit={submitHandler}>
-						<Figure>
-							{/*<Col xs={6} md={4}>*/}
-							{/*<Image
-                  width={200}
-                  height={180}
-                  src="https://cdn.pixabay.com/photo/2017/09/27/20/40/event-2793372_960_720.jpg" roundedCircle />*/}
-							<Image src={srcp} rounded fluid />
-							{/*</Col>*/}
-						</Figure>
-
-						<Form.Group controlId='name'>
-							<Form.Label>Name</Form.Label>
-							<Form.Control
-								type='name'
-								placeholder='Enter name'
-								value={name}
-								onChange={(e) => setName(e.target.value)}
-							></Form.Control>
-						</Form.Group>
-
-						<Form.Group controlId='email'>
-							<Form.Label>Email Address</Form.Label>
-							<Form.Control
-								type='email'
-								placeholder='Enter email'
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-							></Form.Control>
-						</Form.Group>
-
-						<Form.Group controlId='password'>
-							<Form.Label>Password</Form.Label>
-							<Form.Control
-								type='password'
-								placeholder='Enter password'
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-							></Form.Control>
-						</Form.Group>
-
-						<Form.Group controlId='confirmPassword'>
-							<Form.Label>Confirm Password</Form.Label>
-							<Form.Control
-								type='password'
-								placeholder='Confirm password'
-								value={confirmPassword}
-								onChange={(e) => setConfirmPassword(e.target.value)}
-							></Form.Control>
-						</Form.Group>
-						<br />
-						<Button type='submit' variant='primary'>
-							Update Profile
-						</Button>
+						<Row>
+						<Col md={3}>
+							<Figure>
+								{/*<Col xs={6} md={4}>*/}
+								{/*<Image
+					width={200}
+					height={180}
+					src="https://cdn.pixabay.com/photo/2017/09/27/20/40/event-2793372_960_720.jpg" roundedCircle />*/}
+								<Image src={srcp} rounded fluid />
+								{/*</Col>*/}
+							</Figure><br/>
+								<Button type='submit' variant='primary'>
+									Update Profile
+								</Button>
+						</Col>
+						<Col md={5}>
+							<Form.Group controlId='name'>
+								<Form.Label>Name</Form.Label>
+								<Form.Control
+									type='name'
+									placeholder='Enter name'
+									value={name}
+									disabled={name_edit}
+									onChange={(e) => setName(e.target.value)}
+								></Form.Control>								
+								<Button type='button' variant='primary' size="sm" onClick={(e) => editName(false)}>
+									Edit Name
+								</Button>
+							</Form.Group>
+							<br/>
+							<Form.Group controlId='email'>
+								<Form.Label>Email Address</Form.Label>
+								<Form.Control
+									type='email'
+									placeholder='Enter email'
+									value={email}
+									disabled={email_edit}
+									onChange={(e) => setEmail(e.target.value)}
+								></Form.Control>
+								<Button type='button' variant='primary' size="sm"  onClick={(e) => editEmail(false)}>
+									Edit Email
+								</Button>
+							</Form.Group>
+							<br/>
+							<Form.Group controlId='password'>
+								<Form.Label>Password</Form.Label>
+								<Form.Control
+									type='password'
+									placeholder='Enter password'
+									value={password}
+									disabled={password_edit}
+									onChange={(e) => setPassword(e.target.value)}
+								></Form.Control>
+							</Form.Group>
+							<br/>
+							<Form.Group controlId='confirmPassword'>
+								<Form.Label>Confirm Password</Form.Label>
+								<Form.Control
+									type='password'
+									placeholder='Confirm password'
+									value={confirmPassword}
+									disabled={password_edit}
+									onChange={(e) => setConfirmPassword(e.target.value)}
+								></Form.Control>
+								<Button type='button' variant='primary' size="sm" onClick={(e) => editPassword(false)}>
+									Edit Password
+								</Button>
+							</Form.Group>						
+						</Col>
+						</Row>
 					</Form>
 				)}
-			</Col>
-			<Col md={3}></Col>
-		</Row>
+		</div>
 	)
 }
 
