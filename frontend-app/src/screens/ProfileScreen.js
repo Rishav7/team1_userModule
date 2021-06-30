@@ -77,7 +77,7 @@ const ProfileScreen = ({ history }) => {
 					
 					<Form onSubmit={submitHandler}>
 						<Row>
-						<Col md={3}>
+						<Col md={4}>
 							<Figure>
 								{/*<Col xs={6} md={4}>*/}
 								{/*<Image
