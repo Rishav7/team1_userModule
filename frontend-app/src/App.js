@@ -11,14 +11,6 @@ import ProfileScreen from './screens/ProfileScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import NewPasswordScreen from './screens/NewPasswordScreen';
 
-//hello 2
-//hello git hi there
-//HELLO
-//hello
-
-//hello from vaishnavi.m
-
-
 const App = () => {
   return (
 
@@ -42,5 +34,3 @@ const App = () => {
 };
 
 export default App;
-//hello from psk
-//hello from psk ewufheu
