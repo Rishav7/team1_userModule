@@ -11,6 +11,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import NewPasswordScreen from './screens/NewPasswordScreen';
 
+//change by vaishnavi
 const App = () => {
   return (
 
