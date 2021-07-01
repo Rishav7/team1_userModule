@@ -15,6 +15,7 @@ const ProfileScreen = ({ history }) => {
 	const [photo, setPhoto] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
+	const [phone, setPhone] = useState('')
 	const [message, setMessage] = useState(null)
 
 	const dispatch = useDispatch()
@@ -31,6 +32,7 @@ const ProfileScreen = ({ history }) => {
 	const [name_edit, editName] = useState(true)
 	const [email_edit, editEmail] = useState(true)
 	const [password_edit, editPassword] = useState(true)
+	const [phone_edit, editPhone] = useState(true)
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -43,6 +45,7 @@ const ProfileScreen = ({ history }) => {
 				setName(user.name)
 				setEmail(user.email)
 				setPhoto(user.photo)
+				setPhoto(user.phone)
 			}
 		}
 	}, [dispatch, history, userInfo, user, success])
@@ -53,13 +56,14 @@ const ProfileScreen = ({ history }) => {
 			setMessage('Passwords do not match')
 		} else {
 			dispatch(
-				updateUserProfile({ id: user._id, name, email, password, photo })
+				updateUserProfile({ id: user._id, name, email, password, photo,phone })
 			)
 			console.log('clicked')
 		}
 		editName(true)
 		editEmail(true)
 		editPassword(true)
+		editPhone(true)
 	}
 	const srcp = 'http://localhost:5000/dp/' + photo
 	return (
@@ -130,6 +134,25 @@ const ProfileScreen = ({ history }) => {
 								</Button>
 							</Form.Group>
 							<br />
+							<Form.Group controlId='phone'>
+								<Form.Label>Mobile No.</Form.Label>
+								<Form.Control
+									type='phone'
+									placeholder='Enter phone no'
+									value={phone}
+									disabled={phone_edit}
+									onChange={(e) => setPhone(e.target.value)}
+								></Form.Control>
+								<Button
+									type='button'
+									variant='primary'
+									size='sm'
+									onClick={(e) => editPhone(false)}
+								>
+									Edit Phone no
+								</Button>
+							</Form.Group>
+							<br/>
 							<Form.Group controlId='password'>
 								<Form.Label>Password</Form.Label>
 								<Form.Control
