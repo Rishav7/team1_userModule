@@ -8,17 +8,27 @@ const userSchema = mongoose.Schema({
 
     name: {
         type: String,
-        required: true
+        unique: false,
+        lowercase: true,
+        trim: true,
+        required: [true, 'Please provide a Name'],
+        match: [/[a-zA-Z]{4,}/, 'Please provide a valid Name'],
+        index: true
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        unique: true,
+        trim: true,
+        required: [true, 'Please provide a Email'],
+        match: [/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/, 'Please provide a valid Email Address'],
+        index: true
     },
 
     password: {
         type: String,
-        required: true
+        trim: true,
+        required: [true, 'Please provide a Password'],
+        match: [/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/],
     },
     isAdmin: {
         type: Boolean,
@@ -28,6 +38,17 @@ const userSchema = mongoose.Schema({
     photo: {
         type: String,
         default: 'no-photo.jpg'
+    },
+    phone: {
+        type: Number,
+        max: 9999999999,
+        min: 1000000000,
+        unique: true,
+        required: [true, 'Please provide a Contact Number']
+    },
+    isBlocked: {
+        type: Boolean,
+        default: false
     },
     passwordResetToken: String,
     passwordResetExpires: Date
