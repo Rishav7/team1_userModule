@@ -28,10 +28,9 @@ const ProfileScreen = ({ history }) => {
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
 	const { success } = userUpdateProfile
 
-
-	const [name_edit,editName]= useState(true);
-	const [email_edit,editEmail]= useState(true);
-	const [password_edit,editPassword]= useState(true);
+	const [name_edit, editName] = useState(true)
+	const [email_edit, editEmail] = useState(true)
+	const [password_edit, editPassword] = useState(true)
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -65,31 +64,32 @@ const ProfileScreen = ({ history }) => {
 	const srcp = 'http://localhost:5000/dp/' + photo
 	return (
 		<div>
-				<h2>User Profile</h2>
-				{message && <Message variant='danger'>{message}</Message>}
+			<h2>User Profile</h2>
+			{message && <Message variant='danger'>{message}</Message>}
 
-				{success && <Message variant='success'>Profile Updated</Message>}
-				{loading ? (
-					<Loader />
-				) : error ? (
-					<Message variant='danger'>{error}</Message>
-				) : (
-					
-					<Form onSubmit={submitHandler}>
-						<Row>
-						<Col md={4}>
+			{success && <Message variant='success'>{success}</Message>}
+			{loading ? (
+				<Loader />
+			) : error ? (
+				<Message variant='danger'>{error}</Message>
+			) : (
+				<Form onSubmit={submitHandler}>
+					<Row>
+						<Col md={3}>
 							<Figure>
 								{/*<Col xs={6} md={4}>*/}
 								{/*<Image
 					width={200}
 					height={180}
 					src="https://cdn.pixabay.com/photo/2017/09/27/20/40/event-2793372_960_720.jpg" roundedCircle />*/}
-								<Image src={srcp} rounded fluid />
+								<Image
+									src='https://cdn.pixabay.com/photo/2017/09/27/20/40/event-2793372_960_720.jpg'
+									rounded
+									fluid
+								/>
 								{/*</Col>*/}
-							</Figure><br/>
-								<Button type='submit' variant='primary'>
-									Update Profile
-								</Button>
+							</Figure>
+							<br />
 						</Col>
 						<Col md={5}>
 							<Form.Group controlId='name'>
@@ -100,12 +100,17 @@ const ProfileScreen = ({ history }) => {
 									value={name}
 									disabled={name_edit}
 									onChange={(e) => setName(e.target.value)}
-								></Form.Control>								
-								<Button type='button' variant='primary' size="sm" onClick={(e) => editName(false)}>
+								></Form.Control>
+								<Button
+									type='button'
+									variant='primary'
+									size='sm'
+									onClick={(e) => editName(false)}
+								>
 									Edit Name
 								</Button>
 							</Form.Group>
-							<br/>
+							<br />
 							<Form.Group controlId='email'>
 								<Form.Label>Email Address</Form.Label>
 								<Form.Control
@@ -115,11 +120,16 @@ const ProfileScreen = ({ history }) => {
 									disabled={email_edit}
 									onChange={(e) => setEmail(e.target.value)}
 								></Form.Control>
-								<Button type='button' variant='primary' size="sm"  onClick={(e) => editEmail(false)}>
+								<Button
+									type='button'
+									variant='primary'
+									size='sm'
+									onClick={(e) => editEmail(false)}
+								>
 									Edit Email
 								</Button>
 							</Form.Group>
-							<br/>
+							<br />
 							<Form.Group controlId='password'>
 								<Form.Label>Password</Form.Label>
 								<Form.Control
@@ -130,7 +140,7 @@ const ProfileScreen = ({ history }) => {
 									onChange={(e) => setPassword(e.target.value)}
 								></Form.Control>
 							</Form.Group>
-							<br/>
+							<br />
 							<Form.Group controlId='confirmPassword'>
 								<Form.Label>Confirm Password</Form.Label>
 								<Form.Control
@@ -140,14 +150,24 @@ const ProfileScreen = ({ history }) => {
 									disabled={password_edit}
 									onChange={(e) => setConfirmPassword(e.target.value)}
 								></Form.Control>
-								<Button type='button' variant='primary' size="sm" onClick={(e) => editPassword(false)}>
+								<Button
+									type='button'
+									variant='primary'
+									size='sm'
+									onClick={(e) => editPassword(false)}
+								>
 									Edit Password
 								</Button>
-							</Form.Group>						
+								<br />
+								<br />
+								<Button type='submit' variant='primary'>
+									Update Profile
+								</Button>
+							</Form.Group>
 						</Col>
-						</Row>
-					</Form>
-				)}
+					</Row>
+				</Form>
+			)}
 		</div>
 	)
 }
