@@ -14,7 +14,7 @@ const path = require('path');
 // access  Public
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body
+  const { name, email, password ,phone} = req.body
 
   const userExists = await User.findOne({ email })
 
@@ -27,6 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    phone
   })
 
   if (user) {
@@ -35,6 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      phone: user.phone,
       token: generateToken(user._id),
     })
   } else {
@@ -58,6 +60,7 @@ const authUser = asyncHandler(async (req, res) => {
       photo: user.photo,
       email: user.email,
       isAdmin: user.isAdmin,
+      phone: user.phone,
       token: generateToken(user._id),
     })
   } else {
@@ -78,6 +81,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       photo: user.photo,
+      phone: user.phone
     })
   } else {
     res.status(401)
@@ -101,12 +105,16 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (req.body.password) {
       user.password = req.body.password
     }
+    if (req.body.phone) {
+      user.phone = req.body.phone
+    }
     const updateUser = await user.save()
     res.json({
       _id: updateUser._id,
       name: updateUser.name,
       email: updateUser.email,
       isAdmin: updateUser.isAdmin,
+      phone: updateUser.phone,
       token: generateToken(updateUser._id),
     })
   } else {
