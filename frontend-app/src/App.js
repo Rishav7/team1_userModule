@@ -10,7 +10,8 @@ import ProfileScreen from './screens/ProfileScreen';
 
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import NewPasswordScreen from './screens/NewPasswordScreen';
-
+import PasswordSuccessScreen from './screens/PasswordSuccessScreen'
+import SentScreen from './screens/SentScreen'
 const App = () => {
   return (
 
@@ -23,7 +24,8 @@ const App = () => {
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/forgotPassword' component={ForgotPasswordScreen} exact />
           <Route path='/resetPassword/:token' component={NewPasswordScreen} exact />
-
+          <Route path='/sent' component={SentScreen} exact />
+          <Route path='/PasswordSuccess' component={PasswordSuccessScreen} exact />
         </Container>
       </main>
       <Footers />

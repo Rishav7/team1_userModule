@@ -29,8 +29,8 @@ const userSchema = mongoose.Schema({
         type: String,
         default: 'no-photo.jpg'
     },
-
-
+    passwordResetToken: String,
+    passwordResetExpires: Date
 },
     {
         timestamps: true
@@ -68,5 +68,4 @@ userSchema.methods.createPasswordResetToken = function () {
 
 
 const User = mongoose.model('User', userSchema)
-// export default User
 module.exports = User

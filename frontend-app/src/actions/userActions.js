@@ -238,7 +238,7 @@ export const resetPassword =
 
 			dispatch({
 				type: NEW_PASSWORD_SUCCESS,
-				payload: data.success,
+				payload: data.message,
 			})
 		} catch (error) {
 			dispatch({

@@ -158,17 +158,15 @@ const uploadProfilePic = asyncHandler(async (req, res, next) => {
 const forgotPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return new Error("No user with the given email address")
+    res.status(400)
+    throw new Error("No user with given email address")
   }
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforesave: false });
-
-
-  const resetURL = `${req.protocol}://${req.get('host')}/api/users/resetpassword/${resetToken}`;
-  const url = `http://localhost:3000/resetPassword/${resetToken};`
-  const message = `Forgot your password?Submit a PATCH request with your new password and passwordConfirm to:<a> ${url}.</a>
-  \n
-  If you didn't forget your password , please ignore this email!`;
+  const message = `You are receiving this because you have requested the reset of the password from your account.\n\n`+
+  `Please click on the following link or paste this into your browser to complete the process within 10 minutes of receiving it:\n\n`+
+  `http://localhost:3000/resetPassword/${resetToken}\n\n`+
+  `If you did not request this, please ignore this mail and your password will remain unchanged`
 
   try {
     await sendEmail({
@@ -178,7 +176,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     });
     res.status(200).json({
       status: 'success',
-      message: 'Token sent to email'
+      message: 'Mail sent'
     });
 
   } catch (err) {
@@ -216,12 +214,11 @@ const resetPassword = asyncHandler(async (req, res) => {
   const token = generateToken(user._id);
   res.status(200).json({
     status: 'success',
+    message:"PASSWORD CHANGED",
     token
   });
 
 })
-
-// export { authUser, registerUser, getUserProfile, updateUserProfile, uploadProfilePic ,forgotPassword, resetPassword }
 
 module.exports = { authUser, registerUser, getUserProfile, updateUserProfile, uploadProfilePic, forgotPassword, resetPassword }
 
