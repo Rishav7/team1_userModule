@@ -14,6 +14,7 @@ const RegisterScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [phone, setPhone] = useState('')
   const [message, setMessage] = useState(null)
 
 
@@ -21,6 +22,7 @@ const RegisterScreen = ({ location, history }) => {
   const [passwordError, setPasswordError] = useState(true)
   const [nameError, setNameError] = useState(true)
   const [confirmPasswordError, setConfirmPasswordError] = useState(true)
+  const [phoneError, setPhoneError] = useState(true)
 
 
 
@@ -76,7 +78,21 @@ const RegisterScreen = ({ location, history }) => {
       setConfirmPasswordError(true)
     }
   }
-
+  
+  const onPhoneChange = (event) => {
+    var phoneValue = (event.target.value);
+    const expression = new RegExp('^[6-9]{1}[0-9]{9}$');
+   
+    if (!(expression.test(phoneValue))) {
+      setPhone(phoneValue)
+      setPhoneError(false)
+    }
+    else {
+      setPhone(phoneValue)
+      setPhoneError(true)
+    }
+  }
+  
   //use Dispatch
   const dispatch = useDispatch()
   const userRegister = useSelector((state) => state.userRegister)
@@ -92,7 +108,7 @@ const RegisterScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      dispatch(register(name, email, password))
+      dispatch(register(name, email, password,phone))
     }
   }
 
@@ -159,8 +175,21 @@ const RegisterScreen = ({ location, history }) => {
            {!confirmPasswordError && <Form.Text className="text-danger">
             Please match the confirm password (test@0t) </Form.Text>}
         </Form.Group>
-
+        
+        <Form.Group controlId='phone'>
+          <Form.Label>Mobile No</Form.Label>
+          <Form.Control
+            type='phone'
+            placeholder='phone no'
+            value={phone}
+            onChange={onPhoneChange}
+          ></Form.Control>
+           {!phoneError && <Form.Text className="text-danger">
+            Please enter a valid 10 digit number starting with 6/7/8/9</Form.Text>}
+        </Form.Group>
+            
         <br />
+          
         <Button type='submit' variant='primary'>
           Register
         </Button>
