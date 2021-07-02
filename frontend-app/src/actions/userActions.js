@@ -193,13 +193,17 @@ export const uploadProfilePic = (user) => async (dispatch) => {
 				'Content-Type': 'multipart/form-data',
 			},
 		}
-		const { data } = await axios.put('/upload', user, config)
+		const { data } = await axios.put(
+			'http://localhost:5000/api/users/upload/' + user.id,
+			{ file: user.selectedFile },
+			config
+		)
 		dispatch({
 			type: USER_UPDATE_PIC_SUCCESS,
 			payload: data,
 		})
 
-		localStorage.setItem('userInfo', JSON.stringify(data))
+		// localStorage.setItem('userInfo', JSON.stringify(data))
 	} catch (error) {
 		const message =
 			error.response && error.response.data.message
