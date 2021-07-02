@@ -22,6 +22,9 @@ import {
 	NEW_PASSWORD_FAIL,
 	CLEAR_ERRORS,
 	USER_DETAILS_RESET,
+	USER_UPDATE_PIC_FAIL,
+	USER_UPDATE_PIC_SUCCESS,
+	USER_UPDATE_PIC_REQUEST,
 } from '../constants/userConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -61,7 +64,7 @@ export const logout = () => (dispatch) => {
 }
 
 //register a new User
-export const register = (name, email, password, phone) => async (dispatch) => {
+export const register = (name, email, password) => async (dispatch) => {
 	try {
 		dispatch({
 			type: USER_REGISTER_REQUEST,
@@ -75,7 +78,7 @@ export const register = (name, email, password, phone) => async (dispatch) => {
 
 		const { data } = await axios.post(
 			'/api/users',
-			{ name, email, password, phone },
+			{ name, email, password },
 			config
 		)
 
@@ -153,9 +156,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		}
-
 		const { data } = await axios.put(`/api/users/profile`, user, config)
-
 		dispatch({
 			type: USER_UPDATE_PROFILE_SUCCESS,
 			payload: data,
@@ -180,6 +181,39 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 	}
 }
 
+// profile pic update
+
+export const uploadProfilePic = (user) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_UPDATE_PIC_REQUEST,
+		})
+		const config = {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		}
+		const { data } = await axios.put('/upload', user, config)
+		dispatch({
+			type: USER_UPDATE_PIC_SUCCESS,
+			payload: data,
+		})
+
+		localStorage.setItem('userInfo', JSON.stringify(data))
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: USER_UPDATE_PIC_FAIL,
+			payload: message,
+		})
+	}
+}
 export const clearErrors = () => async (dispatch) => {
 	dispatch({
 		type: CLEAR_ERRORS,
@@ -238,7 +272,7 @@ export const resetPassword =
 
 			dispatch({
 				type: NEW_PASSWORD_SUCCESS,
-				payload: data.message,
+				payload: data.success,
 			})
 		} catch (error) {
 			dispatch({
