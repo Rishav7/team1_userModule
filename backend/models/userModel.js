@@ -28,6 +28,7 @@ const userSchema = mongoose.Schema(
 			type: String,
 			trim: true,
 			required: [true, 'Please provide a Password'],
+			//match: [/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,12}$/],
 		},
 		isAdmin: {
 			type: Boolean,
