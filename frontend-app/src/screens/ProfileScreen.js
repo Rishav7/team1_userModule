@@ -45,7 +45,7 @@ const ProfileScreen = ({ history }) => {
 				setName(user.name)
 				setEmail(user.email)
 				setPhoto(user.photo)
-				setPhoto(user.phone)
+				setPhone(user.phone)
 			}
 		}
 	}, [dispatch, history, userInfo, user, success])
@@ -56,7 +56,7 @@ const ProfileScreen = ({ history }) => {
 			setMessage('Passwords do not match')
 		} else {
 			dispatch(
-				updateUserProfile({ id: user._id, name, email, password, photo,phone })
+				updateUserProfile({ id: user._id, name, email, password, photo, phone })
 			)
 			console.log('clicked')
 		}
@@ -65,7 +65,7 @@ const ProfileScreen = ({ history }) => {
 		editPassword(true)
 		editPhone(true)
 	}
-	const srcp = 'http://localhost:5000/dp/' + photo
+	//const srcp = 'http://localhost:5000/dp/' + photo
 	return (
 		<div>
 			<h2>User Profile</h2>
@@ -152,7 +152,7 @@ const ProfileScreen = ({ history }) => {
 									Edit Phone no
 								</Button>
 							</Form.Group>
-							<br/>
+							<br />
 							<Form.Group controlId='password'>
 								<Form.Label>Password</Form.Label>
 								<Form.Control
