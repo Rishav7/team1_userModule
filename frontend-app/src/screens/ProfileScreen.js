@@ -81,7 +81,7 @@ const ProfileScreen = ({ history }) => {
 					<Row>
 						<Col md={3}>
 							<Figure>
-								{/*<Col xs={6} md={4}>*/}
+							
 								{/*<Image
 					width={200}
 					height={180}
